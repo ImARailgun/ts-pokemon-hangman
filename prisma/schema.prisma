@@ -3,9 +3,30 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
+
+model saveData {
+   id        Int   @id @default(autoincrement())
+   password  String @unique
+   wins      Int 
+   highStreak Int 
+   curStreak  Int 
+   avail_poke Json
+}
+
+model Board {
+  id        Int   @id @default(autoincrement())
+  url       String @unique
+  boardData Json?
+  turn      String
+  gameOver  Boolean?
+  winner    String?
+}
+
