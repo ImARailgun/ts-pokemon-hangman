@@ -1,28 +1,25 @@
-import { initTRPC } from "@trpc/server";
+import { initTRPC, TRPCError } from "@trpc/server";
+
+import * as trpcNext from "@trpc/server/adapters/next";
+import { z } from "zod";
+import { PrismaClient } from "@prisma/client";
+import { save, saveType, defaultSave } from "../../../logic/save";
 
 const t = initTRPC.create();
 
 export const publicProcedure = t.procedure;
-export const router = t.router;
-export const middleware = t.middleware;
-
-import * as trpcNext from "@trpc/server/adapters/next";
-import { z } from "zod";
-import { save } from "../../../logic/save";
-
-import { PrismaClient } from "@prisma/client";
+export const { router } = t;
+export const { middleware } = t;
 
 const prisma = new PrismaClient();
 
 const appRouter = router({
-   post_save: publicProcedure.input(save).query(async ({ input }) => {
+   post_save: publicProcedure.input(save).mutation(async ({ input }) => {
       if (input.password === "") {
          return {
-            text: `failure password: ${input.password}`,
+            text: `post failed: empty password`,
          };
       }
-
-      console.log("password:", input.password);
 
       try {
          await prisma.saveData.upsert({
@@ -39,16 +36,43 @@ const appRouter = router({
       } catch (e) {
          console.error(e);
          return {
-            text: `failure password: ${input.password}`,
+            text: `post failed: ${input.password}`,
          };
       }
 
       return {
-         text: `sucess password: ${input.password}`,
+         text: `post success: ${input.password}`,
       };
    }),
-   //retrieve_save
-   //getPokemon
+   get_save: publicProcedure.input(z.string()).query(async ({ input }) => {
+      if (input === "") {
+         return defaultSave;
+      }
+
+      try {
+         const response = await prisma.saveData.findUnique({
+            where: {
+               password: input,
+            },
+            select: {
+               password: true,
+               wins: true,
+               highStreak: true,
+               curStreak: true,
+               avail_poke: true,
+            },
+         });
+
+         if (!response) {
+            return defaultSave;
+         }
+
+         return response;
+      } catch (e) {
+         return defaultSave;
+      }
+   }),
+   // getPokemon
 });
 
 export type AppRouter = typeof appRouter;
