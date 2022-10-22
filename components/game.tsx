@@ -72,7 +72,6 @@ export default function Home() {
             password.updateSave
          ) {
             setPassword({ ...password, updateSave: false });
-            setSave(resGetSave.data as saveType);
          }
       }
    }, [password, resGetSave]);
