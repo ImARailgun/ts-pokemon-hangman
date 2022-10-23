@@ -3,13 +3,6 @@ type Props = {
 };
 
 export default function Form({ handleSubmit }: Props) {
-   // interface FormElements extends HTMLFormControlsCollection {
-   //    password: HTMLInputElement;
-   // }
-   // interface UsernameFormElement extends HTMLFormElement {
-   //    readonly elements: FormElements;
-   // }
-
    return (
       <form onSubmit={handleSubmit}>
          <input

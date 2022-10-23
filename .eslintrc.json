@@ -41,6 +41,10 @@
         "react/jsx-indent":"off",
         "react/jsx-indent-props":"off",
         "no-lonely-if":"off",
-        "brace-style":"off"
+        "brace-style":"off",
+        "import/prefer-default-export": "off",
+        "no-restricted-syntax":"off",
+        "@typescript-eslint/no-shadow": "error",
+        "no-shadow":"off"
     }
 }

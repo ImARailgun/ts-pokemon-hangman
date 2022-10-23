@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+export enum regionEnum {
+   kanto,
+   johto,
+   hoenn,
+   sinnoh,
+   unova,
+   kalos,
+   galar,
+   alola,
+}
+
 export const save = z.object({
    password: z.string(),
    wins: z.number(),
@@ -19,7 +30,34 @@ export const save = z.object({
 
 export type saveType = z.infer<typeof save>;
 
-export const populatePoke = (start: number, amount: number) => {
+export const populatePoke = (region: regionEnum) => {
+   let start = 1;
+   let amount = 151;
+   if (region === regionEnum.kanto) {
+      start = 1;
+      amount = 151;
+   } else if (region === regionEnum.johto) {
+      start = 152;
+      amount = 100;
+   } else if (region === regionEnum.hoenn) {
+      start = 252;
+      amount = 135;
+   } else if (region === regionEnum.sinnoh) {
+      start = 387;
+      amount = 107;
+   } else if (region === regionEnum.unova) {
+      start = 494;
+      amount = 156;
+   } else if (region === regionEnum.kalos) {
+      start = 650;
+      amount = 72;
+   } else if (region === regionEnum.alola) {
+      start = 722;
+      amount = 88;
+   } else if (region === regionEnum.galar) {
+      start = 810;
+      amount = 81;
+   }
    return new Array(amount).fill(0).map((elem, i) => start + i);
 };
 
@@ -29,13 +67,13 @@ export const defaultSave: saveType = {
    highStreak: 0,
    curStreak: 0,
    avail_poke: {
-      kanto: populatePoke(1, 151),
-      johto: populatePoke(152, 100),
-      hoenn: populatePoke(252, 135),
-      sinnoh: populatePoke(387, 107),
-      unova: populatePoke(494, 156),
-      kalos: populatePoke(650, 72),
-      alola: populatePoke(722, 88),
-      galar: populatePoke(810, 81),
+      kanto: populatePoke(regionEnum.kanto),
+      johto: populatePoke(regionEnum.johto),
+      hoenn: populatePoke(regionEnum.hoenn),
+      sinnoh: populatePoke(regionEnum.sinnoh),
+      unova: populatePoke(regionEnum.unova),
+      kalos: populatePoke(regionEnum.kalos),
+      alola: populatePoke(regionEnum.alola),
+      galar: populatePoke(regionEnum.galar),
    },
 };

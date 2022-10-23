@@ -1,9 +1,10 @@
-import { initTRPC, TRPCError } from "@trpc/server";
+import { initTRPC } from "@trpc/server";
 
 import * as trpcNext from "@trpc/server/adapters/next";
 import { z } from "zod";
 import { PrismaClient } from "@prisma/client";
-import { save, saveType, defaultSave } from "../../../logic/save";
+import axios from "axios";
+import { save, defaultSave } from "../../../logic/save";
 
 const t = initTRPC.create();
 
@@ -72,7 +73,32 @@ const appRouter = router({
          return defaultSave;
       }
    }),
-   // getPokemon
+   get_pokemon: publicProcedure.input(z.number()).query(async ({ input }) => {
+      if (input === 999) {
+         return ["", ""];
+      }
+
+      console.log("get_pokemon call", input);
+      const requestURL = `https://pokeapi.co/api/v2/pokemon/${String(input)}/`;
+
+      const result = await axios({
+         method: "get",
+         url: requestURL,
+      }).then((response) => {
+         const pokemonName =
+            String(response.data.species.name).slice(0, 1).toUpperCase() +
+            String(response.data.species.name).slice(1);
+
+         const spriteURL: string =
+            Math.floor(Math.random() * 11) >= 10
+               ? response.data.sprites.front_shiny
+               : response.data.sprites.front_default;
+
+         return [pokemonName, spriteURL];
+      });
+
+      return result;
+   }),
 });
 
 export type AppRouter = typeof appRouter;
