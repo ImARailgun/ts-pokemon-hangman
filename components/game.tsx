@@ -130,6 +130,11 @@ export default function Home() {
 
    return (
       <>
+         <div>
+            <div>{pokemon[0]}</div>
+            <img src={pokemon[1]} alt="sprite" />
+         </div>
+
          <div>save password: {save.password}</div>
          <div>save wins: {save.wins}</div>
 
@@ -139,11 +144,6 @@ export default function Home() {
          <button type="button" onClick={addWin}>
             win button
          </button>
-
-         <div>
-            <div>{pokemon[0]}</div>
-            <img src={pokemon[1]} alt="sprite" />
-         </div>
       </>
    );
 }

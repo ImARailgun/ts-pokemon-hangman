@@ -22,6 +22,8 @@ const appRouter = router({
          };
       }
 
+      console.log("post_save call", input.password);
+
       try {
          await prisma.saveData.upsert({
             where: {
@@ -46,6 +48,7 @@ const appRouter = router({
       };
    }),
    get_save: publicProcedure.input(z.string()).query(async ({ input }) => {
+      console.log("get_save call", input);
       if (input === "") {
          return defaultSave;
       }
