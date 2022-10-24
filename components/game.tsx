@@ -18,6 +18,8 @@ export default function Home() {
    const [dexSelected, setDexSelected] = useState({ dex: 999, region: "" });
    const [gensSelected, setGensSelected] = useState(defaultGensSelected);
 
+   // FIX GIT IGNORE FOR .ENV
+
    /*
       on win:
       update save stats
