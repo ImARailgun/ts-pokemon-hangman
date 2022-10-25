@@ -1,8 +1,10 @@
+import { regionType } from "./save";
+
 export const selectRegion = (regions: { [key: string]: boolean }) => {
    const selectedRegions = [];
 
    for (const region in regions) {
-      if (regions[region]) {
+      if (regions[region] === true) {
          selectedRegions.push(region);
       }
    }
@@ -31,4 +33,18 @@ export const defaultGensSelected = {
       alola: false,
       galar: false,
    },
+};
+
+export type gensSelectedType = {
+   selecting: boolean;
+   regions: {
+      kanto: boolean;
+      johto: boolean;
+      hoenn: boolean;
+      sinnoh: boolean;
+      unova: boolean;
+      kalos: boolean;
+      alola: boolean;
+      galar: boolean;
+   };
 };

@@ -1,51 +1,70 @@
 import React, { useState, useEffect } from "react";
-import { trpc } from "../utils/trpc";
 import Form from "./form";
+import RegionSelect from "./regionSelect";
+import HangMan from "./hangMan";
 
-import { defaultSave, saveType } from "../logic/save";
-import { defaultHangMan } from "../logic/hangMan";
+import { trpc } from "../utils/trpc";
+
+import { defaultSave, populatePoke, saveType, regionType } from "../logic/save";
+import { defaultHangMan, guessALetter } from "../logic/hangMan";
 import {
    generateDex,
    selectRegion,
    defaultGensSelected,
 } from "../logic/select-dex";
+import { useLocalState } from "../logic/local-storage";
 
 export default function Home() {
    const [save, setSave] = useState(defaultSave);
-   const [password, setPassword] = useState("");
-   const [pokemon, setPokemon] = useState(["", ""]);
+   const [password, setPassword] = useLocalState();
+   const [pokemon, setPokemon] = useState({
+      name: "",
+      sprite: "",
+   });
+   const [newDex, setNewDex] = useState(true);
    const [hangMan, setHangMan] = useState(defaultHangMan);
-   const [dexSelected, setDexSelected] = useState({ dex: 999, region: "" });
+   const [dexSelected, setDexSelected] = useState({
+      dex: 999,
+      region: "kanto" as regionType,
+   });
    const [gensSelected, setGensSelected] = useState(defaultGensSelected);
 
-   // FIX GIT IGNORE FOR .ENV
+   // local storage for initial password (most recent password if available. if not, use "")
+   useEffect(() => {
+      if (gensSelected.selecting || hangMan.word === "") {
+         return () => {};
+      }
 
-   /*
-      on win:
-      update save stats
-      remove selected dex from available pok(selectedDex.region)
-      if array is empty (array.length === 1) (cause of closure snapshotting)
-      populate poke(selectedDex.region)
+      // doesnt work on Android
+      const detectKeyDown = (e: KeyboardEvent) => {
+         setHangMan(guessALetter(e.key, hangMan));
+      };
 
-      mutate save
+      // allows android to play by capturing input into text area
+      // @ts-ignore
+      const detectInput = (e) => {
+         setHangMan(guessALetter(e.data!, hangMan));
+      };
 
-   */
+      document.addEventListener("input", detectInput, true);
+      document.addEventListener("keydown", detectKeyDown, true);
+
+      return () => [
+         document.removeEventListener("input", detectInput, true),
+         document.removeEventListener("keydown", detectKeyDown, true),
+      ];
+   }, [hangMan, gensSelected.selecting]);
 
    useEffect(() => {
-      const region = selectRegion(gensSelected.regions);
+      const region = selectRegion(gensSelected.regions) as regionType;
 
       setDexSelected({
-         // @ts-ignore
          dex: generateDex(save.avail_poke[region]),
          region,
       });
-   }, [
-      gensSelected.regions,
-      hangMan.gameOver,
-      gensSelected.selecting,
-      save.password,
-      save.avail_poke,
-   ]);
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [gensSelected.regions, newDex, save.password]);
 
    const { mutate } = trpc.post_save.useMutation();
 
@@ -84,7 +103,7 @@ export default function Home() {
                      data.highStreak > save.highStreak
                         ? data.highStreak
                         : save.highStreak,
-                  curStreak: save.curStreak,
+                  curStreak: data.curStreak,
                };
 
                mutate(newSave);
@@ -105,47 +124,135 @@ export default function Home() {
       onSuccess(data) {
          if (hangMan.gameOver === "no") {
             setPokemon(data);
+            setHangMan({
+               ...hangMan,
+               word: data.name,
+               length: data.name.length,
+            });
          }
       },
    });
 
-   const addWin = () => {
-      setSave({
-         ...save,
-         wins: save.wins + 1,
+   const startGame = () => {
+      setGensSelected({
+         ...gensSelected,
+         selecting: false,
       });
-
-      mutate({
-         ...save,
-         wins: save.wins + 1,
+      setHangMan({
+         ...defaultHangMan,
+         word: hangMan.word,
+         length: hangMan.length,
       });
+      setNewDex(!newDex);
    };
 
-   const handleSubmit = (event: any) => {
-      event.preventDefault();
+   useEffect(() => {
+      if (hangMan.gameOver === "win") {
+         const newSave = {
+            ...save,
+            wins: save.wins + 1,
+            curStreak: save.curStreak + 1,
+            highStreak:
+               save.curStreak + 1 > save.highStreak
+                  ? save.curStreak + 1
+                  : save.highStreak,
+            avail_poke: {
+               ...save.avail_poke,
+            },
+         } as saveType;
 
-      const input = event.target.password.value;
-      if (input !== "" && input !== save.password) {
-         setPassword(input);
+         const availArr: number[] = newSave.avail_poke[dexSelected.region];
+
+         const index = availArr.indexOf(dexSelected.dex);
+
+         let newArr = availArr
+            .slice(0, index)
+            .concat(availArr.slice(index + 1));
+
+         if (newArr.length === 0) {
+            newArr = populatePoke(dexSelected.region);
+         }
+
+         newSave.avail_poke[dexSelected.region] = newArr;
+
+         mutate(newSave);
+
+         setSave(newSave);
+      } else if (hangMan.gameOver === "lose") {
+         mutate({
+            ...save,
+            curStreak: 0,
+         });
+
+         setSave({
+            ...save,
+            curStreak: 0,
+         });
       }
-   };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [hangMan.gameOver]);
+
+   useEffect(() => {
+      if (hangMan.gameOver === "no") {
+         return () => {};
+      }
+
+      const detectKeyDown = (e: KeyboardEvent) => {
+         if (e.key === "Enter") {
+            startGame();
+         }
+      };
+      document.addEventListener("keydown", detectKeyDown, true);
+
+      return () => document.removeEventListener("keydown", detectKeyDown, true);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [hangMan.gameOver]);
 
    return (
       <>
-         <div>
-            <div>{pokemon[0]}</div>
-            <img src={pokemon[1]} alt="sprite" />
-         </div>
+         {gensSelected.selecting && (
+            <>
+               <div>
+                  <RegionSelect
+                     setGensSelected={setGensSelected}
+                     gensSelected={gensSelected}
+                  />
+               </div>
+               <button type="button" onClick={startGame}>
+                  Start Game!
+               </button>
+
+               <div>
+                  <Form
+                     setPassword={setPassword}
+                     save={save}
+                     password={password}
+                  />
+               </div>
+            </>
+         )}
+
+         {!gensSelected.selecting && (
+            <>
+               {/* create component for hangMan (incorrect guesses, sprite, gengar, correct guesses)
+            props = hangMan and pokemon (infer type?????) (dont need to set within) */}
+
+               <HangMan pokemon={pokemon} hangMan={hangMan} />
+
+               <div>Hangman word: {hangMan.word}</div>
+            </>
+         )}
+
+         {/* hangMan.gameOver !== no && modal component */}
+
+         {/* add big text input for mobile keyboard appearing */}
 
          <div>save password: {save.password}</div>
+         {/* add stats that are always present (bottom of screen? footer?)
+         if password !== "", display profile name too */}
          <div>save wins: {save.wins}</div>
-
-         <div>
-            <Form handleSubmit={handleSubmit} />
-         </div>
-         <button type="button" onClick={addWin}>
-            win button
-         </button>
+         <div>save highStreak: {save.highStreak}</div>
+         <div>save curStreak: {save.curStreak}</div>
       </>
    );
 }

@@ -78,7 +78,10 @@ const appRouter = router({
    }),
    get_pokemon: publicProcedure.input(z.number()).query(async ({ input }) => {
       if (input === 999) {
-         return ["", ""];
+         return {
+            name: "",
+            sprite: "",
+         };
       }
 
       console.log("get_pokemon call", input);
@@ -97,7 +100,10 @@ const appRouter = router({
                ? response.data.sprites.front_shiny
                : response.data.sprites.front_default;
 
-         return [pokemonName, spriteURL];
+         return {
+            name: pokemonName,
+            sprite: spriteURL,
+         };
       });
 
       return result;

@@ -1,8 +1,21 @@
+import { saveType } from "../logic/save";
+
 type Props = {
-   handleSubmit: (event: any) => void;
+   setPassword: (str: string) => void;
+   save: saveType;
+   password: string;
 };
 
-export default function Form({ handleSubmit }: Props) {
+export default function Form({ setPassword, save, password }: Props) {
+   const handleSubmit = (event: any) => {
+      event.preventDefault();
+
+      const input = event.target.password.value;
+      if (input !== "" && input !== save.password) {
+         setPassword(input);
+      }
+   };
+
    return (
       <form onSubmit={handleSubmit}>
          <input
@@ -10,6 +23,7 @@ export default function Form({ handleSubmit }: Props) {
             id="password"
             name="password"
             placeholder="input password"
+            defaultValue={password}
             required
          />
          <input type="submit" />

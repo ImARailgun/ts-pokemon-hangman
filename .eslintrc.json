@@ -1,50 +1,44 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": [
-        "plugin:react/recommended",
-        "airbnb",
-        "next/core-web-vitals"
-    ],
-    "globals": {
-        "React": true,
-        "JSX": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": "latest",
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "@typescript-eslint"
-    ],
-    "rules": {
-        "no-console": 0,
-        "no-unused-vars": 0,
-        "comma-dangle": 0,
-        "import/extensions": 0,
-        "implicit-arrow-linebreak": 0,
-        "operator-linebreak": 0,
-        "react/jsx-filename-extension": 0,
-        "react/jsx-one-expression-per-line": 0,
-        "react/jsx-props-no-spreading": 0,
-        "@next/next/no-img-element": 0,
-        "indent": "off",
-        "quotes":"off",
-        "linebreak-style":"off",
-        "react/jsx-indent":"off",
-        "react/jsx-indent-props":"off",
-        "no-lonely-if":"off",
-        "brace-style":"off",
-        "import/prefer-default-export": "off",
-        "no-restricted-syntax":"off",
-        "@typescript-eslint/no-shadow": "error",
-        "no-shadow":"off"
-    }
+   "env": {
+      "browser": true,
+      "es2021": true
+   },
+   "extends": ["plugin:react/recommended", "airbnb", "next/core-web-vitals"],
+   "globals": {
+      "React": true,
+      "JSX": true
+   },
+   "parser": "@typescript-eslint/parser",
+   "parserOptions": {
+      "ecmaFeatures": {
+         "jsx": true
+      },
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+   },
+   "plugins": ["react", "@typescript-eslint"],
+   "rules": {
+      "no-console": 0,
+      "no-unused-vars": 0,
+      "comma-dangle": 0,
+      "import/extensions": 0,
+      "implicit-arrow-linebreak": 0,
+      "operator-linebreak": 0,
+      "react/jsx-filename-extension": 0,
+      "react/jsx-one-expression-per-line": 0,
+      "react/jsx-props-no-spreading": 0,
+      "@next/next/no-img-element": 0,
+      "indent": "off",
+      "quotes": "off",
+      "linebreak-style": "off",
+      "react/jsx-indent": "off",
+      "react/jsx-indent-props": "off",
+      "no-lonely-if": "off",
+      "brace-style": "off",
+      "import/prefer-default-export": "off",
+      "no-restricted-syntax": "off",
+      "@typescript-eslint/no-shadow": "error",
+      "no-shadow": "off",
+      "object-curly-newline": "off"
+   }
 }
