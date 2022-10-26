@@ -14,6 +14,7 @@
 
 .textboxBorder > form > label > input[type="checkbox"] {
    margin: 15px 10px 10px 5px;
+   color-scheme: dark;
 }
 
 .regions {

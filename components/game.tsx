@@ -149,6 +149,7 @@ export default function Home() {
       setNewDex(!newDex);
    };
 
+   // calculate stats, remove pokemon from avail_poke, populate avail_pok if empty
    useEffect(() => {
       if (hangMan.gameOver === "win") {
          const newSave = {
@@ -178,8 +179,6 @@ export default function Home() {
 
          newSave.avail_poke[dexSelected.region] = newArr;
 
-         // create function for returning newSave instead of having everything done here
-
          mutate(newSave);
 
          setSave(newSave);
@@ -197,7 +196,7 @@ export default function Home() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [hangMan.gameOver]);
 
-   // custom hook?
+   // detect keypresses
    useEffect(() => {
       if (gensSelected.selecting || hangMan.word === "") {
          return () => {};
@@ -223,7 +222,7 @@ export default function Home() {
       ];
    }, [hangMan, gensSelected.selecting]);
 
-   // custom hook?
+   // detect "Enter" for playAgain
    useEffect(() => {
       if (hangMan.gameOver === "no") {
          return () => {};

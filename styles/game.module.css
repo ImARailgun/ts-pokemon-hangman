@@ -38,6 +38,14 @@
    width: 99%;
    height: 100%;
    position: absolute;
-   text-rendering: none;
    transform: translate(-50%, -75%);
+   appearance: none;
+   white-space: unset;
+   outline: none;
+}
+
+.makeKeyboard:focus {
+   border: transparent;
+   border-color: transparent;
+   outline: none;
 }

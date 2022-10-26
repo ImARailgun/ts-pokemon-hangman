@@ -16,6 +16,8 @@ html {
 }
 button {
    font-family: "Press Start 2P", sans-serif;
+   color: #eaeaea;
+   background-color: black;
 }
 input {
    font-family: "Press Start 2P", sans-serif;
@@ -34,4 +36,12 @@ input {
    html {
       font-size: 60%;
    }
+}
+button:hover {
+   background-color: rgb(198, 76, 223);
+   border-color: rgb(198, 76, 223);
+}
+button:focus {
+   background-color: rgb(145, 2, 119);
+   border-color: rgb(145, 2, 119);
 }
