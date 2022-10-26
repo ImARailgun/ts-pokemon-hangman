@@ -29,3 +29,15 @@
       padding-top: 0vh;
    }
 }
+
+.makeKeyboard {
+   background: transparent;
+   color: transparent;
+   border: transparent;
+   resize: none;
+   width: 99%;
+   height: 100%;
+   position: absolute;
+   text-rendering: none;
+   transform: translate(-50%, -75%);
+}

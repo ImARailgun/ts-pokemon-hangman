@@ -280,6 +280,7 @@ export default function Home() {
                      gameOver={hangMan.gameOver}
                   />
                )}
+               <textarea className={styles.makeKeyboard} value="" />
             </>
          )}
 
