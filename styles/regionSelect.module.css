@@ -1,0 +1,45 @@
+.textboxBorder {
+   background: white;
+   border-radius: 2px;
+   border: 1px solid white;
+   box-shadow: 0 2px 0 2px rgb(0, 0, 0), inset 0 2px 0 2px black,
+      0 0 0 2px black, inset 0 0 0 2px black;
+   padding: 20px 20px;
+   max-width: fit-content;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: right;
+   margin: auto;
+}
+
+.textboxBorder > form > label > input[type="checkbox"] {
+   margin: 15px 10px 10px 5px;
+}
+
+.regions {
+   transform: translate(-8px, 0px);
+}
+
+@media (max-width: 1000px) {
+}
+
+@media (max-width: 410px) {
+   .textboxBorder {
+      font-size: smaller;
+   }
+}
+
+@media (max-width: 370px) {
+   .textboxBorder {
+      font-size: smaller;
+   }
+   .regions {
+      font-size: smaller;
+   }
+}
+
+@media (max-width: 337px) {
+   .textboxBorder {
+      font-size: 10%;
+   }
+}

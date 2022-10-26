@@ -1,4 +1,5 @@
 import { gensSelectedType } from "../logic/select-dex";
+import styles from "../styles/regionSelect.module.css";
 
 type Props = {
    setGensSelected: (state: gensSelectedType) => void;
@@ -7,8 +8,9 @@ type Props = {
 
 export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
    return (
-      <div>
-         <form>
+      <div className={styles.textboxBorder}>
+         <form className={styles.regions}>
+            &nbsp;
             <label htmlFor="kanto">
                <input
                   type="checkbox"
@@ -26,6 +28,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Kanto
             </label>
+            &nbsp;
             <label htmlFor="johto">
                <input
                   type="checkbox"
@@ -43,6 +46,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Johto
             </label>
+            &nbsp;
             <label htmlFor="hoenn">
                <input
                   type="checkbox"
@@ -60,6 +64,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Hoenn
             </label>
+            &nbsp;
             <label htmlFor="sinnoh">
                <input
                   type="checkbox"
@@ -77,6 +82,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Sinnoh
             </label>
+            <div />
             <label htmlFor="unova">
                <input
                   type="checkbox"
@@ -94,6 +100,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Unova
             </label>
+            &nbsp;
             <label htmlFor="kalos">
                <input
                   type="checkbox"
@@ -111,6 +118,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Kalos
             </label>
+            &nbsp;
             <label htmlFor="alola">
                <input
                   type="checkbox"
@@ -128,6 +136,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Alola
             </label>
+            &nbsp;
             <label htmlFor="galar">
                <input
                   type="checkbox"

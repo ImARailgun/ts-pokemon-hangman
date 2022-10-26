@@ -1,0 +1,45 @@
+.modal {
+   border: 5px solid black;
+   background-color: rgba(0, 0, 0, 0.35);
+   position: fixed;
+   z-index: 2;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+}
+
+.box {
+   font-family: "Press Start 2P", sans-serif;
+   max-width: fit-content;
+   border-radius: 2px;
+   padding: 20px;
+   width: 85%;
+   line-height: 280%;
+   margin: 12% auto;
+   background: white;
+   border: 1px solid white;
+   box-shadow: 0 2px 0 2px black, inset 0 2px 0 2px black, 0 0 0 2px black,
+      inset 0 0 0 2px black;
+   text-align: center;
+   padding-left: 1%;
+}
+
+.box > i {
+   width: 0;
+   height: 0;
+   border: 7px solid transparent;
+   border-top-color: black;
+
+   animation: bounce 0.5s ease-in-out infinite alternate;
+   float: right;
+}
+
+@keyframes bounce {
+   from {
+      margin-top: 20px;
+   }
+   to {
+      margin-top: 23px;
+   }
+}

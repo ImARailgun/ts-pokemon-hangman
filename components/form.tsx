@@ -22,11 +22,11 @@ export default function Form({ setPassword, save, password }: Props) {
             type="text"
             id="password"
             name="password"
-            placeholder="input password"
+            placeholder="input profile"
             defaultValue={password}
             required
          />
-         <input type="submit" />
+         <button type="submit">Change Profile</button>
       </form>
    );
 }

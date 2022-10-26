@@ -14,14 +14,16 @@ export default function HangMan({ pokemon, hangMan }: Props) {
    const gengarSprite = (lives: number) => `/${String(lives)}.png`;
 
    const gengarClass =
-      hangMan.gameOver === "lose" ? styles.gengarClass : styles.gengImg;
+      hangMan.gameOver === "lose" ? styles.gengarClass : styles.hangImg;
 
    return (
       <>
          <div className={styles.container}>
             <div className={styles.third}>
                {hangMan.lives < 5 && (
-                  <h3 className={styles.textboxBorder}>
+                  <h3
+                     className={`${styles.textboxBorder} ${styles.incorrectDisplay}`}
+                  >
                      {" "}
                      {createIncorrectDisplay(hangMan.incorrectGuesses)}
                   </h3>

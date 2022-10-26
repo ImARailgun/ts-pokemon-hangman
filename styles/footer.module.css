@@ -1,0 +1,33 @@
+.footer {
+   position: fixed;
+   left: 50%;
+   transform: translate(-50%, 0);
+   bottom: 0;
+   width: 1200px;
+
+   max-width: 94vw;
+
+   margin: 10px 0 30px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-wrap: wrap;
+   height: auto;
+   line-height: 180%;
+}
+
+.textboxBorder {
+   background: white;
+   border-radius: 2px;
+   border: 1px solid white;
+   box-shadow: 0 2px 0 2px black, inset 0 2px 0 2px black, 0 0 0 2px black,
+      inset 0 0 0 2px black;
+   padding: 5px;
+   z-index: 1;
+}
+
+@media (max-height: 545px) {
+   .footer {
+      margin: 10px 0 10px 0;
+   }
+}

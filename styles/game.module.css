@@ -1,0 +1,31 @@
+.startPad {
+   padding-top: 7vh;
+}
+
+.formPad {
+   padding-top: 10vh;
+}
+
+.gamePad {
+   padding-top: 5vh;
+}
+
+@media (max-width: 1000px) {
+}
+
+@media (max-width: 800px) {
+}
+
+@media (max-height: 545px) {
+   .startPad {
+      padding-top: 3vh;
+   }
+
+   .formPad {
+      padding-top: 3vh;
+   }
+
+   .gamePad {
+      padding-top: 0vh;
+   }
+}

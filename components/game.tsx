@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import Form from "./form";
 import RegionSelect from "./regionSelect";
 import HangMan from "./hangMan";
+import Footer from "./footer";
+import Modal from "./modal";
+
+import styles from "../styles/game.module.css";
 
 import { trpc } from "../utils/trpc";
 
@@ -28,32 +32,6 @@ export default function Home() {
       region: "kanto" as regionType,
    });
    const [gensSelected, setGensSelected] = useState(defaultGensSelected);
-
-   // local storage for initial password (most recent password if available. if not, use "")
-   useEffect(() => {
-      if (gensSelected.selecting || hangMan.word === "") {
-         return () => {};
-      }
-
-      // doesnt work on Android
-      const detectKeyDown = (e: KeyboardEvent) => {
-         setHangMan(guessALetter(e.key, hangMan));
-      };
-
-      // allows android to play by capturing input into text area
-      // @ts-ignore
-      const detectInput = (e) => {
-         setHangMan(guessALetter(e.data!, hangMan));
-      };
-
-      document.addEventListener("input", detectInput, true);
-      document.addEventListener("keydown", detectKeyDown, true);
-
-      return () => [
-         document.removeEventListener("input", detectInput, true),
-         document.removeEventListener("keydown", detectKeyDown, true),
-      ];
-   }, [hangMan, gensSelected.selecting]);
 
    useEffect(() => {
       const region = selectRegion(gensSelected.regions) as regionType;
@@ -133,6 +111,19 @@ export default function Home() {
       },
    });
 
+   const resetGame = () => {
+      setGensSelected({
+         ...gensSelected,
+         selecting: false,
+      });
+      setHangMan({
+         ...defaultHangMan,
+         word: hangMan.word,
+         length: hangMan.length,
+      });
+      setNewDex(!newDex);
+   };
+
    const startGame = () => {
       setGensSelected({
          ...gensSelected,
@@ -142,6 +133,18 @@ export default function Home() {
          ...defaultHangMan,
          word: hangMan.word,
          length: hangMan.length,
+      });
+   };
+
+   const returnToSelectGens = () => {
+      setHangMan({
+         ...defaultHangMan,
+         word: hangMan.word,
+         length: hangMan.length,
+      });
+      setGensSelected({
+         ...gensSelected,
+         selecting: true,
       });
       setNewDex(!newDex);
    };
@@ -175,6 +178,8 @@ export default function Home() {
 
          newSave.avail_poke[dexSelected.region] = newArr;
 
+         // create function for returning newSave instead of having everything done here
+
          mutate(newSave);
 
          setSave(newSave);
@@ -192,6 +197,33 @@ export default function Home() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, [hangMan.gameOver]);
 
+   // custom hook?
+   useEffect(() => {
+      if (gensSelected.selecting || hangMan.word === "") {
+         return () => {};
+      }
+
+      // doesnt work on Android
+      const detectKeyDown = (e: KeyboardEvent) => {
+         setHangMan(guessALetter(e.key, hangMan));
+      };
+
+      // allows android to play by capturing input into text area
+      // @ts-ignore
+      const detectInput = (e) => {
+         setHangMan(guessALetter(e.data!, hangMan));
+      };
+
+      document.addEventListener("input", detectInput, true);
+      document.addEventListener("keydown", detectKeyDown, true);
+
+      return () => [
+         document.removeEventListener("input", detectInput, true),
+         document.removeEventListener("keydown", detectKeyDown, true),
+      ];
+   }, [hangMan, gensSelected.selecting]);
+
+   // custom hook?
    useEffect(() => {
       if (hangMan.gameOver === "no") {
          return () => {};
@@ -199,7 +231,7 @@ export default function Home() {
 
       const detectKeyDown = (e: KeyboardEvent) => {
          if (e.key === "Enter") {
-            startGame();
+            resetGame();
          }
       };
       document.addEventListener("keydown", detectKeyDown, true);
@@ -210,6 +242,7 @@ export default function Home() {
 
    return (
       <>
+         <div className={styles.gamePad} />
          {gensSelected.selecting && (
             <>
                <div>
@@ -218,9 +251,12 @@ export default function Home() {
                      gensSelected={gensSelected}
                   />
                </div>
+               <div className={styles.startPad} />
                <button type="button" onClick={startGame}>
                   Start Game!
                </button>
+
+               <div className={styles.formPad} />
 
                <div>
                   <Form
@@ -234,25 +270,20 @@ export default function Home() {
 
          {!gensSelected.selecting && (
             <>
-               {/* create component for hangMan (incorrect guesses, sprite, gengar, correct guesses)
-            props = hangMan and pokemon (infer type?????) (dont need to set within) */}
-
                <HangMan pokemon={pokemon} hangMan={hangMan} />
 
-               <div>Hangman word: {hangMan.word}</div>
+               {hangMan.gameOver !== "no" && (
+                  <Modal
+                     resetGame={resetGame}
+                     returnToSelectGens={returnToSelectGens}
+                     word={hangMan.word}
+                     gameOver={hangMan.gameOver}
+                  />
+               )}
             </>
          )}
 
-         {/* hangMan.gameOver !== no && modal component */}
-
-         {/* add big text input for mobile keyboard appearing */}
-
-         <div>save password: {save.password}</div>
-         {/* add stats that are always present (bottom of screen? footer?)
-         if password !== "", display profile name too */}
-         <div>save wins: {save.wins}</div>
-         <div>save highStreak: {save.highStreak}</div>
-         <div>save curStreak: {save.curStreak}</div>
+         <Footer save={save} />
       </>
    );
 }
