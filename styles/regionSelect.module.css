@@ -21,16 +21,36 @@
    transform: translate(-8px, 0px);
 }
 
-@media (max-width: 1000px) {
+.mobileDiv {
+   display: inline;
 }
 
-@media (max-width: 410px) {
+.UnmobileDiv {
+   display: block;
+}
+
+.space {
+   text-rendering: unset;
+}
+
+@media (max-width: 479px) {
+   .mobileDiv {
+      display: block;
+   }
+
+   .UnmobileDiv {
+      display: inline;
+      margin: 8px;
+   }
+}
+
+@media (max-width: 340px) {
    .textboxBorder {
       font-size: smaller;
    }
 }
 
-@media (max-width: 370px) {
+/* @media (max-width: 370px) {
    .textboxBorder {
       font-size: smaller;
    }
@@ -55,4 +75,4 @@
    .textboxBorder {
       font-size: 0.068in;
    }
-}
+} */

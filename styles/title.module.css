@@ -8,3 +8,13 @@
    color: yellow;
    text-shadow: 0 0 5px black, 0 0 5px black;
 }
+
+.mobileDiv {
+   display: inline;
+}
+
+@media (max-width: 480px) {
+   .mobileDiv {
+      display: block;
+   }
+}

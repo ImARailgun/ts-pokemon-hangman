@@ -64,6 +64,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Hoenn
             </label>
+            <div className={styles.mobileDiv} />
             &nbsp;
             <label htmlFor="sinnoh">
                <input
@@ -82,7 +83,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Sinnoh
             </label>
-            <div />
+            <div className={styles.UnmobileDiv} />
             <label htmlFor="unova">
                <input
                   type="checkbox"
@@ -100,6 +101,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Unova
             </label>
+            <div className={styles.mobileDiv} />
             &nbsp;
             <label htmlFor="kalos">
                <input
@@ -154,6 +156,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                />
                Galar
             </label>
+            &nbsp;
          </form>
       </div>
    );
