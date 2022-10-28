@@ -14,6 +14,7 @@
    flex-wrap: wrap;
    height: auto;
    line-height: 180%;
+   visibility: visible;
 }
 
 .textboxBorder {
@@ -29,5 +30,12 @@
 @media (max-height: 545px) {
    .footer {
       margin: 10px 0 10px 0;
+   }
+}
+
+@media (max-height: 445px) {
+   .footer {
+      margin: 10px 0 10px 0;
+      visibility: hidden;
    }
 }
