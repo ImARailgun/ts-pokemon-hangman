@@ -84,6 +84,7 @@ export default function RegionSelect({ setGensSelected, gensSelected }: Props) {
                Sinnoh
             </label>
             <div className={styles.UnmobileDiv} />
+            &nbsp;
             <label htmlFor="unova">
                <input
                   type="checkbox"
